@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yl.core.dao.CustomerMapper">
+    <resultMap id="customerBOMap" type="com.yl.core.bean.CustomerBO">
+        <id column="id" jdbcType="VARCHAR" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="mobile" jdbcType="VARCHAR" property="mobile"/>
+        <result column="id_no" jdbcType="VARCHAR" property="id_no"/>
+        <result column="register_time" jdbcType="TIMESTAMP" property="register_time" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="update_time" />
+        <result column="open_id" jdbcType="VARCHAR" property="open_id" />
+        <result column="user_type" jdbcType="INTEGER" property="user_type" typeHandler="com.zhixindu.commons.handler.type.EnumValueTypeHandler"/>
+        <result column="pay_password" jdbcType="VARCHAR" property="pay_password"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="create_time" />
+        <result column="user_role" jdbcType="INTEGER" property="user_role" typeHandler="com.zhixindu.commons.handler.type.EnumValueTypeHandler"/>
+        <result column="upgrade_time" jdbcType="TIMESTAMP" property="upgrade_time" />
+        <result column="verified_status" jdbcType="INTEGER" property="verified_status" typeHandler="com.zhixindu.commons.handler.type.EnumValueTypeHandler"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, `name`, mobile, id_no, register_time, update_time, open_id, user_type, pay_password,
+        create_time, user_role, upgrade_time, verified_status
+    </sql>
+
+    <sql id="whereSql">
+        <where>
+            1 = 1
+            <if test="name != null"> AND `name` LIKE CONCAT('%',#{name},'%')</if>
+            <if test="mobile != null"> AND mobile=#{mobile}</if>
+        </where>
+    </sql>
+
+    <select id="selectByPage" parameterType="com.yl.core.bean.CustomerParam" resultMap="customerBOMap">
+        select
+        <include refid="Base_Column_List"/>
+        from CUSTOMER
+        <include refid="whereSql"/>
+        ORDER BY CREATE_TIME DESC
+    </select>
+
+</mapper>

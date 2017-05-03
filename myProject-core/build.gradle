@@ -1,0 +1,144 @@
+group 'com.zhixindu.watson'
+version '1.0.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'war'
+apply plugin: "jacoco"
+
+sourceCompatibility = 1.5
+version = '1.0'
+
+repositories {
+    maven { url "http://99.48.18.230:8081/repository/zxd-groups/"}
+    mavenCentral()
+    maven { url "http://repo.spring.io/release/" }
+    maven { url "http://repo.spring.io/milestone/" }
+    maven { url "http://maven.aliyun.com/nexus/content/groups/public" }
+}
+
+dependencies {
+    compile project(':myProject-facade')
+    compile fileTree(dir: 'src/lib', include: '*.jar')
+    compile 'org.springframework:spring-context:4.2.5.RELEASE',
+            'org.springframework:spring-core:4.2.5.RELEASE',
+            'org.springframework:spring-beans:4.2.5.RELEASE',
+            'org.springframework:spring-expression:4.2.5.RELEASE',
+            'org.springframework:spring-context-support:4.2.5.RELEASE',
+            'org.springframework:spring-jdbc:4.2.5.RELEASE',
+            'org.springframework:spring-tx:4.2.5.RELEASE',
+            'org.springframework:spring-web:4.2.5.RELEASE',
+            'org.springframework:spring-webmvc:4.2.5.RELEASE',
+            'org.springframework:spring-aspects:4.2.5.RELEASE',
+            'org.springframework:spring-aop:4.2.5.RELEASE',
+            'org.springframework:spring-oxm:4.2.5.RELEASE',
+            'org.springframework:spring-test:4.2.5.RELEASE',
+            /* zxd */
+            'com.zhixindu.commons:zxd-api:1.2.19.RELEASE',
+            'com.zhixindu.commons:zxd-commons-core:1.2.25.RELEASE',
+            /* Log */
+            'org.slf4j:slf4j-api:1.7.19',
+            'org.slf4j:jcl-over-slf4j:1.7.19',
+            'ch.qos.logback:logback-core:1.1.6',
+            'ch.qos.logback:logback-classic:1.1.6',
+            /* JSON */
+            'com.fasterxml.jackson.core:jackson-core:2.7.2',
+            'com.fasterxml.jackson.core:jackson-annotations:2.7.2',
+            'com.fasterxml.jackson.core:jackson-databind:2.7.2',
+            'com.alibaba:fastjson:1.2.6',
+            /* DB */
+            'org.mybatis:mybatis:3.3.0',
+            'org.mybatis:mybatis-spring:1.2.3',
+            'com.alibaba:druid:1.0.26',
+            'mysql:mysql-connector-java:5.1.38',
+            /* AOP */
+            'aopalliance:aopalliance:1.0',
+            'org.aspectj:aspectjweaver:1.8.6',
+            'cglib:cglib:3.1',
+            /* Cache */
+            'net.sf.ehcache:ehcache:2.10.0',
+            /* Client */
+            'redis.clients:jedis:2.8.0',
+            'org.mongodb:mongo-java-driver:3.2.2',
+            'org.mongodb.morphia:morphia:1.1.1',
+            'io.netty:netty-all:4.0.33.Final',
+            'org.apache.kafka:kafka-clients:0.10.2.1',
+            'org.apache.kafka:kafka_2.11:0.10.2.1',
+            /* Util */
+            'commons-io:commons-io:2.4',
+            'commons-codec:commons-codec:1.10',
+            'commons-fileupload:commons-fileupload:1.3.1',
+            'commons-configuration:commons-configuration:1.10',
+            'commons-collections:commons-collections:3.2.1',
+            'commons-discovery:commons-discovery:0.5',
+            'javax.validation:validation-api:1.1.0.Final',
+            'org.hibernate:hibernate-validator:5.2.0.Final',
+            'joda-time:joda-time:2.9.2',
+            'org.projectlombok:lombok:1.16.8',
+            'javax.xml.bind:jaxb-api:2.2.12',
+            'javax.activation:activation:1.1.1',
+            /* RPC */
+            'com.alibaba:dubbo:2.5.3',
+            'org.javassist:javassist:3.20.0-GA',
+            'org.apache.zookeeper:zookeeper:3.4.6',
+            'com.github.sgroschupf:zkclient:0.1',
+            /* J2EE */
+            'javax.inject:javax.inject:1',
+            'wsdl4j:wsdl4j:1.6.3',
+            'javax.xml:jaxrpc-api:1.1',
+            'javax.xml.soap:saaj-api:1.3.5'
+    /* Servlet */
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0',
+            'javax.servlet.jsp:jsp-api:2.2',
+            'javax.el:javax.el-api:3.0.0'
+    runtime 'javax.servlet.jsp.jstl:javax.servlet.jsp.jstl-api:1.2.1',
+            'taglibs:standard:1.1.2'
+    testCompile 'junit:junit:4.12',
+            'org.testng:testng:6.9.10',
+            'org.jmockit:jmockit:1.22',
+            'org.jmockit:jmockit-coverage:1.22'
+}
+
+def environment = hasProperty('env') ? env : 'test'
+project.ext.set("env", environment)
+
+processResources {
+    from 'src/env/'+project.env
+}
+
+war {
+    archiveName 'myProject.war'
+}
+
+jacoco {
+    toolVersion = "0.7.6.201602180812"
+    reportsDir = file("$buildDir/customJacocoReportDir")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
+
+test {
+    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    }
+}
+
+configurations {
+    compile.exclude module: 'spring'
+//    compile.exclude group: 'io.netty'
+}
+
+configurations.all {
+    // check for updates every build
+    resolutionStrategy.cacheDynamicVersionsFor 0, 'seconds'
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'

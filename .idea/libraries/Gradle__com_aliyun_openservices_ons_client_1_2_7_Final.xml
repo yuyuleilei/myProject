@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.aliyun.openservices:ons-client:1.2.7.Final">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.aliyun.openservices/ons-client/1.2.7.Final/5ec0072a100dfd46d6981470fcd843d3b765c7ec/ons-client-1.2.7.Final.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.aliyun.openservices/ons-client/1.2.7.Final/b01eac2c9fc58e3f63a01feea12b6de1d5253825/ons-client-1.2.7.Final-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

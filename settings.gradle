@@ -1,0 +1,6 @@
+rootProject.name = 'myProject'
+
+include 'myProject-core'
+
+include 'myProject-facade'
+
