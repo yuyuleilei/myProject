@@ -1,12 +1,46 @@
-apply plugin: 'java'
+group 'com.yl.myProject'
+version '1.0.0.RELEASE'
 
-sourceCompatibility = 1.5
-version = '1.0'
+apply plugin: 'java'
+apply plugin: 'maven'
+
+sourceCompatibility = 1.8
 
 repositories {
+    maven { url "http://99.48.18.230:8081/repository/zxd-groups/" }
+    maven { url "http://www.mvnrepository.com/" }
     mavenCentral()
 }
 
 dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.11'
+    compile 'com.zhixindu.commons:zxd-api:1.2.10.RELEASE'
 }
+
+configurations {
+    deployerJars
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            configuration = configurations.deployerJars
+            repository(url: "http://99.48.18.230:8081/repository/zxd-releases/") {
+                authentication(userName: "develop", password: "develop")
+            }
+            pom.version = version
+            pom.artifactId = 'myProject-facade'
+            pom.groupId = 'com.yl.myProject'
+        }
+    }
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
