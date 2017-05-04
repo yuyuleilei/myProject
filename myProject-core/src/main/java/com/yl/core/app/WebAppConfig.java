@@ -122,10 +122,10 @@ public class WebAppConfig {
         return new MeProducer(mqConfig);
     }
 
-//    @Bean
-//    public MethodValidationPostProcessor methodValidationPostProcessor(){
-//        return new MethodValidationPostProcessor();
-//    }
+    @Bean
+    public MethodValidationPostProcessor methodValidationPostProcessor(){
+        return new MethodValidationPostProcessor();
+    }
 
     @Bean
     public ZxdOssClient ossClient() {

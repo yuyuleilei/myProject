@@ -12,5 +12,5 @@
     <dubbo:registry id="registry" address="${zookeeper.registry}"/>
     <dubbo:protocol name="dubbo" port="20886"/>
     <dubbo:consumer check="false" timeout="50000"/>
-    <dubbo:service interface="com.yl.facade.business.DubboTestBusiness" ref="myProjectBusiness" />
+    <!--<dubbo:service interface="com.yl.facade.business.DubboTestBusiness" ref="myProjectBusiness" />-->
 </beans>
