@@ -2,3 +2,5 @@
 1、gradle构建
 2、spring4
 3、kafa
+4、mongodb
+5、
